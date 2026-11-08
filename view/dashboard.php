@@ -60,7 +60,7 @@
   </div>
   </main>
 
-  <script src="js/base.js"></script>
-  <script src="js/dashboard.js"></script>
+  <script src="../js/base.js"></script>
+  <script src="../js/dashboard.js"></script>
 </body>
 </html>

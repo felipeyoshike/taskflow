@@ -1,0 +1,10 @@
+/* minhas-tarefas.css - estilos exclusivos da página Minhas tarefas */
+
+/* Tarefa atrasada fica com fundo avermelhado (a classe "atrasada" vem no <tr>) */
+tr.atrasada td{background:#fff5f5}
+
+/* Coluna de ações: botões lado a lado, sem quebrar linha */
+td:last-child{white-space:nowrap}
+
+/* Descrição da tarefa em texto menor, abaixo do título */
+td .suave{display:block}
