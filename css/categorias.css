@@ -1,0 +1,7 @@
+/* categorias.css - estilos exclusivos da página Categorias */
+
+/* Seletor de cor com a mesma altura dos outros campos */
+input[type=color]{padding:2px;height:2.3rem;cursor:pointer}
+
+/* Coluna de ações: botões lado a lado, sem quebrar linha */
+td:last-child{white-space:nowrap}

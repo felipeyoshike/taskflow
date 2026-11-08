@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Projetos - TaskFlow</title>
-  <link rel="stylesheet" href="css/base.css">
-  <link rel="stylesheet" href="css/projetos.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/projetos.css">
 </head>
 <body>
   <aside class="sidebar" id="sidebar">
@@ -49,7 +49,7 @@
   </div>
   </main>
 
-  <script src="js/base.js"></script>
-  <script src="js/projetos.js"></script>
+  <script src="../js/base.js"></script>
+  <script src="../js/projetos.js"></script>
 </body>
 </html>
