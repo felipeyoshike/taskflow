@@ -1,0 +1,51 @@
+/* login.css - estilos das telas de login, cadastro e troca de senha do TaskFlow (tema roxo) */
+:root{
+  --roxo:#6d4aff;
+  --roxo-escuro:#5a3ad6;
+  --fundo:#f6f4fc;
+  --texto:#241f3a;
+  --suave:#6e6985;
+  --borda:#ddd8ee;
+  --erro:#d64545;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+
+body{margin:0;font-family:"Segoe UI",system-ui,sans-serif;background:var(--fundo);color:var(--texto)}
+
+/* Centraliza o card na tela */
+.login-pagina{min-height:100vh;display:grid;place-items:center;padding:1rem}
+.login-card{width:100%;max-width:400px;background:#fff;border:1px solid var(--borda);border-radius:16px;padding:2rem;box-shadow:0 8px 24px rgba(109,74,255,.10)}
+.login-logo{margin:0 0 1.5rem;text-align:center;font-size:1.8rem;color:var(--roxo)}
+
+/* Formulário */
+.login-form{display:grid;gap:1rem}
+.login-form h2{margin:0;font-size:1.3rem}
+label{display:block;margin-bottom:.3rem;font-size:.85rem;color:var(--suave)}
+input{width:100%;padding:.65rem .75rem;border:1px solid var(--borda);border-radius:10px;font:inherit;color:var(--texto);background:#fff;transition:border-color .15s,box-shadow .15s}
+input:focus{outline:none;border-color:var(--roxo);box-shadow:0 0 0 3px rgba(109,74,255,.18)}
+
+/* Campo de senha com o botão Mostrar/Ocultar */
+.campo-senha{position:relative}
+.campo-senha input{padding-right:5rem}
+.ver-senha{position:absolute;right:.4rem;top:50%;transform:translateY(-50%);border:0;background:none;color:var(--roxo);font:inherit;font-size:.85rem;cursor:pointer;padding:.3rem .5rem;border-radius:6px}
+.ver-senha:hover{background:#efeaff}
+
+/* Botão principal */
+.btn{width:100%;padding:.7rem;border:0;border-radius:10px;background:var(--roxo);color:#fff;font:inherit;font-weight:600;cursor:pointer;transition:background .15s}
+.btn:hover{background:var(--roxo-escuro)}
+.btn:disabled{opacity:.7;cursor:not-allowed}
+.btn:focus-visible,.link:focus-visible,.ver-senha:focus-visible{outline:2px solid var(--roxo);outline-offset:2px}
+
+/* Links abaixo do botão */
+.login-links{display:grid;gap:.4rem;text-align:center;font-size:.9rem}
+.link{color:var(--roxo);text-decoration:none}
+.link:hover{text-decoration:underline}
+
+/* Texto de ajuda abaixo de um campo */
+.dica{display:block;margin-top:.3rem;font-size:.8rem;color:var(--suave)}
+
+/* Mensagem de erro */
+.msg-erro{margin:0;padding:.6rem .75rem;border-radius:10px;background:#fdeaea;color:var(--erro);font-size:.9rem}
+
+@media(max-width:480px){.login-card{padding:1.4rem}}
