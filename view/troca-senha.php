@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TaskFlow - Trocar senha</title>
   <link rel="icon" href="../img/logo.png" type="image/png">
   <link rel="stylesheet" href="../css/login.css">
-  <title>TaskFlow - Trocar senha</title>
 </head>
 <body>
   <div class="login-pagina">
