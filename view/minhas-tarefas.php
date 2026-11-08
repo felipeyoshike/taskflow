@@ -10,8 +10,8 @@
 <body>
   <aside class="sidebar" id="sidebar">
     <h1 class="logo">TaskFlow</h1>
-    <a href="dashboard.php" class="ativo">Dashboard</a>
-    <a href="minhas-tarefas.php">Minhas tarefas</a>
+    <a href="dashboard.php">Dashboard</a>
+    <a href="minhas-tarefas.php" class="ativo">Minhas tarefas</a>
     <a href="projetos.php">Projetos</a>
     <a href="categorias.php">Categorias</a>
     <a href="usuarios.php">Usuários</a>

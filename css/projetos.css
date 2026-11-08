@@ -1,0 +1,8 @@
+/* projetos.css - estilos exclusivos da página Projetos */
+
+/* A coluna de progresso precisa de espaço para a barra e o percentual */
+.col-progresso{min-width:150px}
+td .progresso{margin-bottom:.2rem}
+
+/* Coluna de ações: botões lado a lado, sem quebrar linha */
+td:last-child{white-space:nowrap}
