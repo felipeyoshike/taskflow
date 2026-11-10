@@ -2,7 +2,6 @@
 const form = document.getElementById('formTrocaSenha');
 const email = document.getElementById('tEmail');
 const nova = document.getElementById('tNova');
-const confirmar = document.getElementById('tNova2');
 const btnSalvar = document.getElementById('btnSalvar');
 const msg = document.getElementById('msgErro');
 
@@ -29,7 +28,6 @@ form.addEventListener('submit', e => {
 
   if (!email.value.trim() || !email.checkValidity()) { erro = 'Digite o e-mail cadastrado.'; campo = email; }
   else if (nova.value.length < 6) { erro = 'A nova senha precisa ter pelo menos 6 caracteres.'; campo = nova; }
-  else if (nova.value !== confirmar.value) { erro = 'A confirmação não confere com a nova senha.'; campo = confirmar; }
 
   if (erro) {
     e.preventDefault();
@@ -41,7 +39,7 @@ form.addEventListener('submit', e => {
 });
 
 // A mensagem some quando a pessoa volta a digitar
-[email, nova, confirmar].forEach(c => c.addEventListener('input', esconderErro));
+[email, nova].forEach(c => c.addEventListener('input', esconderErro));
 
 // Se a pessoa voltar para esta página pelo botão "voltar" do navegador, o botão destrava
 window.addEventListener('pageshow', () => {

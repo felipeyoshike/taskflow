@@ -12,20 +12,22 @@
     <div class="login-card">
       <h1 class="login-logo">TaskFlow</h1>
 
-      <form id="formLogin" class="login-form" action="" method="post" novalidate>
+      <form id="formLogin" class="login-form" action="../processamento/processamento.php" method="POST" novalidate>
         <h2>Entrar</h2>
 
-        <p id="msgErro" class="msg-erro" role="alert" hidden></p>
+        <p id="msgErro" class="msg-erro" role="alert" <?php if (!isset($_GET['erro'])) echo 'hidden'; ?>>
+          E-mail ou senha incorretos.
+        </p>
 
         <div>
           <label for="lEmail">E-mail</label>
-          <input id="lEmail" name="email" type="email" autocomplete="email" required>
+          <input id="lEmail" name="inputEmailLogin" type="email" autocomplete="email" required>
         </div>
 
         <div>
           <label for="lSenha">Senha</label>
           <div class="campo-senha">
-            <input id="lSenha" name="senha" type="password" autocomplete="current-password" required>
+            <input id="lSenha" name="inputSenhaLogin" type="password" autocomplete="current-password" required>
             <button type="button" id="btnVerSenha" class="ver-senha">Mostrar</button>
           </div>
         </div>
@@ -34,7 +36,7 @@
 
         <div class="login-links">
           <a href="cadastro.php" class="link">Criar uma conta</a>
-          <a href="troca-senha.php" id="linkSenha" class="link">Esqueci a senha</a>
+          <a href="trocar-senha.php" id="linkSenha" class="link">Esqueci a senha</a>
         </div>
       </form>
     </div>

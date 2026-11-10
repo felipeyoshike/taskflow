@@ -1,3 +1,7 @@
+<?php
+ require "../processamento/verificarLogin.php"; 
+?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -16,9 +20,8 @@
     <a href="projetos.php">Projetos</a>
     <a href="categorias.php">Categorias</a>
     <a href="usuarios.php">Usuários</a>
-    <a href="login.php" id="btnSair">Sair</a>
-    <!-- BACK-END: trocar "Usuário" pelo nome do usuário logado (sessão) -->
-    <p class="usuario suave">Usuário</p>
+    <a href="../processamento/sair.php" id="btnSair">Sair</a>
+    <p class="usuario suave"><?php echo htmlspecialchars($_SESSION['usuario_nome']); ?></p>
   </aside>
 
   <main>

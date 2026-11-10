@@ -3,7 +3,6 @@ const form = document.getElementById('formCadastro');
 const nome = document.getElementById('cNome');
 const email = document.getElementById('cEmail');
 const senha = document.getElementById('cSenha');
-const confirmar = document.getElementById('cSenha2');
 const btnCadastrar = document.getElementById('btnCadastrar');
 const msg = document.getElementById('msgErro');
 
@@ -31,7 +30,6 @@ form.addEventListener('submit', e => {
   if (!nome.value.trim()) { erro = 'Informe o nome completo.'; campo = nome; }
   else if (!email.value.trim() || !email.checkValidity()) { erro = 'Digite um e-mail válido.'; campo = email; }
   else if (senha.value.length < 6) { erro = 'A senha precisa ter pelo menos 6 caracteres.'; campo = senha; }
-  else if (senha.value !== confirmar.value) { erro = 'A confirmação não confere com a senha.'; campo = confirmar; }
 
   if (erro) {
     e.preventDefault();
@@ -43,7 +41,7 @@ form.addEventListener('submit', e => {
 });
 
 // A mensagem some quando a pessoa volta a digitar
-[nome, email, senha, confirmar].forEach(c => c.addEventListener('input', esconderErro));
+[nome, email, senha].forEach(c => c.addEventListener('input', esconderErro));
 
 // Se a pessoa voltar para esta página pelo botão "voltar" do navegador, o botão destrava
 window.addEventListener('pageshow', () => {
