@@ -1,7 +1,21 @@
 /* categorias.css - estilos exclusivos da página Categorias */
 
-/* Seletor de cor com a mesma altura dos outros campos */
-input[type=color]{padding:2px;height:2.3rem;cursor:pointer}
+/* Formulário de categoria: nome (mais estreito) e descrição (mais larga) lado a lado */
+.form-categoria
+{
+    grid-template-columns: 1fr 2fr;
+}
+
+@media (max-width: 700px)
+{
+    .form-categoria
+    {
+        grid-template-columns: 1fr;
+    }
+}
 
 /* Coluna de ações: botões lado a lado, sem quebrar linha */
-td:last-child{white-space:nowrap}
+td:last-child
+{
+    white-space: nowrap;
+}

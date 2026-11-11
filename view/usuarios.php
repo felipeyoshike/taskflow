@@ -1,6 +1,6 @@
 <?php
   require "../processamento/verificarLogin.php";
-  require "../processamento/funcoesBD.php";
+  require "../processamento/funcoesUsuarios.php";
   $usuarios = retornarUsuarios();
 
   $usuarioEditar = null;
@@ -35,7 +35,7 @@
     <button class="btn sec menu-btn" id="btnMenu">☰ Menu</button>
 
     <h2>Usuários</h2>
-    <form id="formUsuario" class="card form" action="../processamento/processamento.php" method="post">
+    <form id="formUsuario" class="card form" action="../processamento/processamentoUsuarios.php" method="post">
       <h3 class="full" id="tituloForm"><?php echo $usuarioEditar ? 'Editar usuário' : 'Novo usuário'; ?></h3>
       <input type="hidden" id="uId" name="inputId" value="<?php echo $usuarioEditar['id'] ?? ''; ?>">
       <div><label for="uNome">Nome completo *</label><input id="uNome" name="inputNome" value="<?php echo htmlspecialchars($usuarioEditar['nome'] ?? ''); ?>" required></div>
@@ -61,7 +61,7 @@
                 <td><?php echo htmlspecialchars($u['email']); ?></td>
                 <td>
                   <a href="usuarios.php?editar=<?php echo $u['id']; ?>" class="btn sec peq">Editar</a>
-                  <form action="../processamento/processamento.php" method="post" style="display:inline">
+                  <form action="../processamento/processamentoUsuarios.php" method="post" style="display:inline">
                     <input type="hidden" name="inputExcluirId" value="<?php echo $u['id']; ?>">
                     <button class="btn perigo peq" data-confirmar="Excluir este usuário?">Excluir</button>
                   </form>

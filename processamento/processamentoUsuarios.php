@@ -1,8 +1,9 @@
 <?php
 
 session_start();
-require "funcoesBD.php";
+require_once __DIR__ . "/funcoesUsuarios.php";
 
+// Validar o login
 if (!empty($_POST['inputEmailLogin']) && !empty($_POST['inputSenhaLogin'])){
   $usuario = validarLogin($_POST['inputEmailLogin'], $_POST['inputSenhaLogin']);
 
@@ -16,6 +17,7 @@ if (!empty($_POST['inputEmailLogin']) && !empty($_POST['inputSenhaLogin'])){
   die();
 }
 
+// Excluir usuário
 if (!empty($_POST['inputExcluirId'])){
   excluirUsuario($_POST['inputExcluirId']);
 
@@ -23,6 +25,7 @@ if (!empty($_POST['inputExcluirId'])){
   die();
 }
 
+// Atualizar usuário
 if (!empty($_POST['inputId']) && !empty($_POST['inputNome']) && !empty($_POST['inputEmail'])){
   $senha = $_POST['inputSenha'] ?? "";
 
@@ -32,6 +35,7 @@ if (!empty($_POST['inputId']) && !empty($_POST['inputNome']) && !empty($_POST['i
   die();
 }
 
+// Atualizar senha
 if (!empty($_POST['inputNovaSenha']) && !empty($_POST['inputConfirmarEmail'])){
   $alterou = atualizarSenha($_POST['inputConfirmarEmail'], $_POST['inputNovaSenha']);
 
@@ -43,6 +47,7 @@ if (!empty($_POST['inputNovaSenha']) && !empty($_POST['inputConfirmarEmail'])){
   die();
 }
 
+// Inserir usuário
 if (!empty($_POST['inputNome']) && !empty($_POST['inputEmail']) && !empty($_POST['inputSenha'])){
   $nome = $_POST['inputNome'];
   $email = $_POST['inputEmail'];

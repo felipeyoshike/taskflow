@@ -12,7 +12,7 @@
     <div class="login-card">
       <h1 class="login-logo">TaskFlow</h1>
 
-      <form id="formCadastro" class="login-form" action="../processamento/processamento.php" method="POST" novalidate>
+      <form id="formCadastro" class="login-form" action="../processamento/processamentoUsuarios.php" method="POST" novalidate>
         <h2>Criar conta</h2>
 
         <p id="msgErro" class="msg-erro" role="alert" hidden></p>

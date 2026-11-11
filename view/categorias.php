@@ -28,13 +28,24 @@
   <button class="btn sec menu-btn" id="btnMenu">☰ Menu</button>
 
   <h2>Categorias</h2>
-  <form id="formCategoria" class="card form" action="" method="post">
+  <form id="formCategoria" class="card form form-categoria" action="" method="post">
     <h3 class="full" id="tituloForm">Nova categoria</h3>
     <input type="hidden" id="cId" name="id">
-    <div><label for="cNome">Nome *</label><input id="cNome" name="nome" required maxlength="50"></div>
-    <div><label for="cCor">Cor de identificação</label><input type="color" id="cCor" name="cor" value="#5b5bd6"></div>
-    <div class="full"><label for="cDescricao">Descrição</label><input id="cDescricao" name="descricao"></div>
-      <div class="full"><button type="submit" class="btn">Salvar categoria</button> <button type="reset" class="btn sec">Limpar</button></div>
+
+    <div>
+      <label for="cNome">Nome *</label>
+      <input id="cNome" name="nome" required maxlength="50">
+    </div>
+
+    <div>
+      <label for="cDescricao">Descrição</label>
+      <input id="cDescricao" name="descricao" maxlength="255">
+    </div>
+
+    <div class="full">
+      <button type="submit" class="btn">Salvar categoria</button>
+      <button type="reset" class="btn sec">Limpar</button>
+    </div>
   </form>
 
   <div class="card">
@@ -42,8 +53,7 @@
     <div class="tabela">
       <table>
         <thead><tr><th>Categoria</th><th>Descrição</th><th>Tarefas</th><th>Ações</th></tr></thead>
-        <!-- BACK-END: um <tr> por categoria. A bolinha de cor:
-            <span class="ponto" style="background:#5b5bd6"></span> -->
+        <!-- BACK-END: um <tr> por categoria -->
         <tbody id="corpoCategorias">
           <tr class="sem-registros"><td colspan="4" class="vazio">Nenhuma categoria cadastrada.</td></tr>
         </tbody>

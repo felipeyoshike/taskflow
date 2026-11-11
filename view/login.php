@@ -12,7 +12,7 @@
     <div class="login-card">
       <h1 class="login-logo">TaskFlow</h1>
 
-      <form id="formLogin" class="login-form" action="../processamento/processamento.php" method="POST" novalidate>
+      <form id="formLogin" class="login-form" action="../processamento/processamentoUsuarios.php" method="POST" novalidate>
         <h2>Entrar</h2>
 
         <p id="msgErro" class="msg-erro" role="alert" <?php if (!isset($_GET['erro'])) echo 'hidden'; ?>>

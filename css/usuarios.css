@@ -1,7 +1,14 @@
 /* usuarios.css - estilos exclusivos da página Usuários */
 
 /* E-mail em cinza para destacar o nome */
-.col-email,td:nth-child(2){color:var(--suave)}
+.col-email,
+td:nth-child(2)
+{
+    color: var(--suave);
+}
 
 /* Coluna de ações: botões lado a lado, sem quebrar linha */
-td:last-child{white-space:nowrap}
+td:last-child
+{
+    white-space: nowrap;
+}
