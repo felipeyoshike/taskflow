@@ -52,14 +52,14 @@
       <div class="filtros"><input id="uBusca" placeholder="Buscar por nome ou e-mail..."></div>
       <div class="tabela">
         <table>
-          <thead><tr><th>Nome</th><th class="col-email">E-mail</th><th>Ações</th></tr></thead>
+          <thead><tr><th>Nome</th><th class="col-email">E-mail</th><th class="col-acoes">Ações</th></tr></thead>
           <!-- BACK-END: um <tr> por usuário (nunca exiba a senha) -->
           <tbody id="corpoUsuarios">
             <?php while ($u = mysqli_fetch_assoc($usuarios)) { ?>
               <tr>
                 <td><b><?php echo htmlspecialchars($u['nome']); ?></b></td>
                 <td><?php echo htmlspecialchars($u['email']); ?></td>
-                <td>
+                <td class="col-acoes">
                   <a href="usuarios.php?editar=<?php echo $u['id']; ?>" class="btn sec peq">Editar</a>
                   <form action="../processamento/processamentoUsuarios.php" method="post" style="display:inline">
                     <input type="hidden" name="inputExcluirId" value="<?php echo $u['id']; ?>">

@@ -7,8 +7,9 @@ td:nth-child(2)
     color: var(--suave);
 }
 
-/* Coluna de ações: botões lado a lado, sem quebrar linha */
-td:last-child
+/* Coluna de ações: botões lado a lado, centralizados e sem quebrar linha */
+.col-acoes
 {
+    text-align: center;
     white-space: nowrap;
 }

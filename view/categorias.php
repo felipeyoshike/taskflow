@@ -1,5 +1,13 @@
 <?php
- require "../processamento/verificarLogin.php"; 
+ require "../processamento/verificarLogin.php";
+ require "../processamento/funcoesCategorias.php";
+
+ $categoriaEditar = null;
+ if (isset($_GET['editar'])) {
+   $categoriaEditar = buscarCategoria($_GET['editar']);
+ }
+ $categorias = listarCategorias();
+
 ?>
 
 <!DOCTYPE html>
@@ -28,23 +36,24 @@
   <button class="btn sec menu-btn" id="btnMenu">☰ Menu</button>
 
   <h2>Categorias</h2>
-  <form id="formCategoria" class="card form form-categoria" action="" method="post">
-    <h3 class="full" id="tituloForm">Nova categoria</h3>
-    <input type="hidden" id="cId" name="id">
+  <form id="formCategoria" class="card form" action="../processamento/processamentoCategorias.php" method="post">
+    <h3 class="full" id="tituloForm"><?php echo $categoriaEditar ? 'Editar categoria' : 'Nova categoria'; ?></h3>
+    <input type="hidden" id="cId" name="inputId" value="<?php echo $categoriaEditar['id'] ?? ''; ?>">
 
-    <div>
+    <div class="full">
       <label for="cNome">Nome *</label>
-      <input id="cNome" name="nome" required maxlength="50">
+      <input id="cNome" name="inputNome" required maxlength="50" value="<?php echo htmlspecialchars($categoriaEditar['nome'] ?? ''); ?>">
     </div>
 
-    <div>
+    <div class="full">
       <label for="cDescricao">Descrição</label>
-      <input id="cDescricao" name="descricao" maxlength="255">
+      <textarea id="cDescricao" name="inputDescricao" rows="2" maxlength="255"><?php echo htmlspecialchars($categoriaEditar['descricao'] ?? ''); ?></textarea>
     </div>
 
     <div class="full">
       <button type="submit" class="btn">Salvar categoria</button>
       <button type="reset" class="btn sec">Limpar</button>
+      <?php if ($categoriaEditar) { ?><a href="categorias.php" class="btn cancelar">Cancelar edição</a><?php } ?>
     </div>
   </form>
 
@@ -52,10 +61,25 @@
     <div class="filtros"><input id="cBusca" placeholder="Buscar por nome..."></div>
     <div class="tabela">
       <table>
-        <thead><tr><th>Categoria</th><th>Descrição</th><th>Tarefas</th><th>Ações</th></tr></thead>
-        <!-- BACK-END: um <tr> por categoria -->
+        <thead><tr><th>Categoria</th><th>Descrição</th><th>Tarefas</th><th class="col-acoes">Ações</th></tr></thead>
         <tbody id="corpoCategorias">
-          <tr class="sem-registros"><td colspan="4" class="vazio">Nenhuma categoria cadastrada.</td></tr>
+          <?php while ($c = mysqli_fetch_assoc($categorias)) { ?>
+            <tr>
+              <td><b><?php echo htmlspecialchars($c['nome']); ?></b></td>
+              <td><?php echo htmlspecialchars($c['descricao'] ?? ''); ?></td>
+              <td>-</td>
+              <td class="col-acoes">
+                <a href="categorias.php?editar=<?php echo $c['id']; ?>" class="btn sec peq">Editar</a>
+                <form action="../processamento/processamentoCategorias.php" method="post" style="display:inline">
+                  <input type="hidden" name="inputExcluirId" value="<?php echo $c['id']; ?>">
+                  <button class="btn perigo peq" data-confirmar="Excluir esta categoria?">Excluir</button>
+                </form>
+              </td>
+            </tr>
+          <?php } ?>
+          <tr class="sem-registros" <?php if (mysqli_num_rows($categorias) > 0) echo 'hidden'; ?>>
+            <td colspan="4" class="vazio">Nenhuma categoria cadastrada.</td>
+          </tr>
         </tbody>
       </table>
     </div>

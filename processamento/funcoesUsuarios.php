@@ -25,7 +25,6 @@ function retornarUsuarios(){
 
 function buscarUsuario($id){
   $conexao = conectarBD();
-  $id = (int) $id;
   $consulta = "SELECT * FROM usuarios WHERE id = $id";
   $resultado = mysqli_query($conexao, $consulta);
   return mysqli_fetch_assoc($resultado);
@@ -33,7 +32,6 @@ function buscarUsuario($id){
 
 function atualizarUsuario($id, $nome, $email, $senha){
   $conexao = conectarBD();
-  $id = (int) $id;
   if ($senha != "") {
     $consulta = "UPDATE usuarios SET nome = '$nome', email = '$email', senha = '$senha' WHERE id = $id";
   } else {
@@ -51,7 +49,6 @@ function atualizarSenha($email, $senha){
 
 function excluirUsuario($id){
   $conexao = conectarBD();
-  $id = (int) $id;
   $consulta = "DELETE FROM usuarios WHERE id = $id";
   mysqli_query($conexao, $consulta);
 }
