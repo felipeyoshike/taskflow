@@ -44,7 +44,7 @@
       <div class="full">
         <button type="submit" class="btn">Salvar usuário</button>
         <button type="reset" class="btn sec">Limpar</button>
-        <?php if ($usuarioEditar) { ?><a href="usuarios.php" class="link">Cancelar edição</a><?php } ?>
+        <?php if ($usuarioEditar) { ?><a href="usuarios.php" class="btn cancelar">Cancelar edição</a><?php } ?>
       </div>
     </form>
 
