@@ -3,6 +3,15 @@
 session_start();
 require_once __DIR__ . "/funcoesTarefas.php";
 
+if (!empty($_POST['inputStatusId']) && !empty($_POST['inputNovoStatus'])){
+  if ($_POST['inputNovoStatus'] == 'Concluída' || $_POST['inputNovoStatus'] == 'Pendente'){
+    alterarStatusTarefa($_POST['inputStatusId'], $_POST['inputNovoStatus']);
+  }
+
+  header('Location:../view/minhas-tarefas.php');
+  die();
+}
+
 if (!empty($_POST['inputId']) && !empty($_POST['inputTitulo']) && !empty($_POST['inputCategoria']) && !empty($_POST['inputVencimento'])){
   atualizarTarefa($_POST['inputId'], $_POST['inputTitulo'], $_POST['inputDescricao'] ?? "", $_POST['inputVencimento'],
                   $_POST['inputPrioridade'], $_POST['inputStatus'], $_POST['inputCategoria'], $_POST['inputProjeto'] ?? "");

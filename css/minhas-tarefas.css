@@ -1,5 +1,18 @@
 /* minhas-tarefas.css - estilos exclusivos da página Minhas tarefas */
 
+/* Colunas da tabela centralizadas; só a primeira (nome) fica à esquerda */
+th,
+td
+{
+    text-align: center;
+}
+
+th:first-child,
+td:first-child
+{
+    text-align: left;
+}
+
 /* Tarefa atrasada fica com fundo avermelhado (a classe "atrasada" vem no <tr>) */
 tr.atrasada td
 {
@@ -16,4 +29,69 @@ td:last-child
 td .suave
 {
     display: block;
+}
+
+/* Botão Concluir (verde, mesma cor do selo "Concluída") */
+.btn.ok
+{
+    background: #e3f6ed;
+    color: var(--ok);
+}
+
+/* Janela de comentários */
+dialog.dialogo
+{
+    border: 1px solid var(--borda);
+    border-radius: 14px;
+    padding: 1.1rem;
+    width: min(560px, 92vw);
+    max-height: 85vh;
+    color: var(--texto);
+    background: var(--card);
+}
+
+dialog.dialogo::backdrop
+{
+    background: rgba(20, 25, 50, .4);
+}
+
+.dlg-topo
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: .8rem;
+    margin-bottom: .4rem;
+}
+
+.dlg-topo h3
+{
+    margin: 0;
+}
+
+.lista
+{
+    list-style: none;
+    padding: 0;
+    margin: 0 0 .8rem;
+}
+
+.lista li
+{
+    padding: .6rem 0;
+    border-bottom: 1px solid var(--borda);
+}
+
+.comentarios .meta
+{
+    display: flex;
+    justify-content: space-between;
+    gap: .6rem;
+}
+
+.texto-coment
+{
+    margin: .2rem 0 .4rem;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
 }

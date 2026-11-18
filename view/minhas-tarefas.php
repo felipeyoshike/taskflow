@@ -3,12 +3,20 @@
  require "../processamento/funcoesCategorias.php";
  require "../processamento/funcoesProjetos.php";
  require "../processamento/funcoesTarefas.php";
+ require "../processamento/funcoesComentarios.php";
 
  date_default_timezone_set('America/Sao_Paulo');
 
  $listaCategorias = mysqli_fetch_all(listarCategoriasDoUsuario($_SESSION['usuario_id']), MYSQLI_ASSOC);
  $projetos = listarProjetos($_SESSION['usuario_id']);
  $tarefas = listarTarefas($_SESSION['usuario_id']);
+
+ // Comentários de todas as tarefas do usuário (agrupados por tarefa logo abaixo)
+ $comentarios = mysqli_fetch_all(listarComentarios($_SESSION['usuario_id']), MYSQLI_ASSOC);
+ $comentariosPorTarefa = [];
+ foreach ($comentarios as $c) {
+   $comentariosPorTarefa[$c['tarefa_id']][] = $c;
+ }
 
  $tarefaEditar = null;
  if (isset($_GET['editar'])) {
@@ -26,7 +34,7 @@
   <title>TaskFlow - Minhas tarefas</title>
   <link rel="icon" href="../img/logo.png" type="image/png">
   <link rel="stylesheet" href="../css/base.css">
-  <link rel="stylesheet" href="../css/minhas-tarefas.css">
+  <link rel="stylesheet" href="../css/minhas-tarefas.css?v=2">
 </head>
 <body>
   <aside class="sidebar" id="sidebar">
@@ -125,7 +133,7 @@
     </div>
     <div class="tabela">
       <table>
-        <thead><tr><th>Tarefa</th><th>Categoria</th><th>Projeto</th><th>Prazo</th><th>Prioridade</th><th>Situação</th><th>Ações</th></tr></thead>
+        <thead><tr><th>Tarefa</th><th>Categoria</th><th>Projeto</th><th>Prazo</th><th>Prioridade</th><th>Situação</th><th>Comentários</th><th>Ações</th></tr></thead>
         <tbody id="corpoTarefas">
           <?php while ($t = mysqli_fetch_assoc($tarefas)) {
             // Situação calculada a partir da data de hoje (não fica guardada no banco)
@@ -151,7 +159,18 @@
               <td><?php echo date('d/m/Y', strtotime($t['vencimento'])); ?></td>
               <td><span class="badge <?php echo $classePrioridade; ?>"><?php echo $t['prioridade']; ?></span></td>
               <td><span class="badge <?php echo $situacao; ?>"><?php echo $rotulo; ?></span></td>
+              <td><button type="button" class="btn sec peq" data-comentarios="<?php echo $t['id']; ?>" data-titulo="<?php echo htmlspecialchars($t['titulo']); ?>">💬 <?php echo count($comentariosPorTarefa[$t['id']] ?? []); ?></button></td>
               <td>
+                <form action="../processamento/processamentoTarefas.php" method="post" style="display:inline">
+                  <input type="hidden" name="inputStatusId" value="<?php echo $t['id']; ?>">
+                  <?php if ($t['status'] == 'Concluída') { ?>
+                    <input type="hidden" name="inputNovoStatus" value="Pendente">
+                    <button class="btn sec peq">Reabrir</button>
+                  <?php } else { ?>
+                    <input type="hidden" name="inputNovoStatus" value="Concluída">
+                    <button class="btn ok peq">Concluir</button>
+                  <?php } ?>
+                </form>
                 <a href="minhas-tarefas.php?editar=<?php echo $t['id']; ?>" class="btn sec peq">Editar</a>
                 <form action="../processamento/processamentoTarefas.php" method="post" style="display:inline">
                   <input type="hidden" name="inputExcluirId" value="<?php echo $t['id']; ?>">
@@ -161,15 +180,62 @@
             </tr>
           <?php } ?>
           <tr class="sem-registros" <?php if (mysqli_num_rows($tarefas) > 0) echo 'hidden'; ?>>
-            <td colspan="7" class="vazio">Nenhuma tarefa cadastrada.</td>
+            <td colspan="8" class="vazio">Nenhuma tarefa cadastrada.</td>
           </tr>
         </tbody>
       </table>
     </div>
   </div>
+  <!-- Janela de comentários da tarefa. O JS (js/comentarios.js) abre esta janela e mostra só a lista da tarefa escolhida. -->
+  <dialog id="dlgComentarios" class="dialogo" aria-labelledby="dlgTitulo">
+    <div class="dlg-topo">
+      <h3 id="dlgTitulo">Comentários</h3>
+      <button type="button" class="btn sec peq" id="dlgFechar">Fechar</button>
+    </div>
+
+    <!-- BACK-END: uma lista por tarefa que tenha comentários (o JS mostra a da tarefa aberta) -->
+    <?php foreach ($comentariosPorTarefa as $tarefaId => $lista) { ?>
+      <ul class="lista comentarios" data-tarefa="<?php echo $tarefaId; ?>" hidden>
+        <?php foreach ($lista as $c) { ?>
+          <li>
+            <div class="meta">
+              <b><?php echo htmlspecialchars($c['usuario_nome'] ?? 'Usuário removido'); ?></b>
+              <span class="suave"><?php echo date('d/m/Y H:i', strtotime($c['criado_em'])); ?><?php echo !empty($c['editado_em']) ? ' (editado)' : ''; ?></span>
+            </div>
+            <p class="texto-coment"><?php echo htmlspecialchars($c['texto']); ?></p>
+            <?php if ($c['usuario_id'] == $_SESSION['usuario_id']) { ?>
+              <div>
+                <button type="button" class="btn sec peq" data-editar-comentario="<?php echo $c['id']; ?>" data-texto="<?php echo htmlspecialchars($c['texto']); ?>">Editar</button>
+                <form action="../processamento/processamentoComentarios.php" method="post" style="display:inline">
+                  <input type="hidden" name="inputExcluirComentarioId" value="<?php echo $c['id']; ?>">
+                  <input type="hidden" name="inputComentarioTarefaId" value="<?php echo $c['tarefa_id']; ?>">
+                  <button class="btn perigo peq" data-confirmar="Excluir este comentário?">Excluir</button>
+                </form>
+              </div>
+            <?php } ?>
+          </li>
+        <?php } ?>
+      </ul>
+    <?php } ?>
+    <p class="vazio" id="semComentarios" hidden>Nenhum comentário nesta tarefa ainda.</p>
+
+    <form id="formComentario" class="form" action="../processamento/processamentoComentarios.php" method="post">
+      <input type="hidden" id="cId" name="inputComentarioId" value="">
+      <input type="hidden" id="cTarefaId" name="inputComentarioTarefaId" value="">
+      <div class="full">
+        <label for="cTexto" id="rotuloComentario">Novo comentário</label>
+        <textarea id="cTexto" name="inputComentarioTexto" rows="3" maxlength="500" required></textarea>
+      </div>
+      <div class="full">
+        <button type="submit" class="btn" id="cSalvar">Adicionar comentário</button>
+        <button type="button" class="btn cancelar" id="cCancelar" hidden>Cancelar edição</button>
+      </div>
+    </form>
+  </dialog>
   </main>
 
   <script src="../js/base.js"></script>
   <script src="../js/minhas-tarefas.js"></script>
+  <script src="../js/comentarios.js"></script>
 </body>
 </html>

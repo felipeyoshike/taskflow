@@ -1,5 +1,18 @@
 /* categorias.css - estilos exclusivos da página Categorias */
 
+/* Colunas da tabela centralizadas; só a primeira (nome) fica à esquerda */
+th,
+td
+{
+    text-align: center;
+}
+
+th:first-child,
+td:first-child
+{
+    text-align: left;
+}
+
 /* Coluna de ações: botões lado a lado, centralizados e sem quebrar linha */
 .col-acoes
 {

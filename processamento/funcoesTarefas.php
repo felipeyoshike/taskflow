@@ -44,4 +44,35 @@ function atualizarTarefa($id, $titulo, $descricao, $vencimento, $prioridade, $st
   mysqli_query($conexao, $consulta);
 }
 
+function resumoTarefas($usuario_id, $hoje){
+  $conexao = conectarBD();
+  $usuario_id = (int) $usuario_id;
+  $consulta = "SELECT COUNT(*) AS total,
+                      COALESCE(SUM(status = 'Concluída'), 0) AS concluidas,
+                      COALESCE(SUM(status = 'Pendente'), 0) AS pendentes,
+                      COALESCE(SUM(status = 'Pendente' AND vencimento < '$hoje'), 0) AS atrasadas
+               FROM tarefas
+               WHERE usuario_id = $usuario_id";
+  $resultado = mysqli_query($conexao, $consulta);
+  return mysqli_fetch_assoc($resultado);
+}
+
+function listarProximasTarefas($usuario_id){
+  $conexao = conectarBD();
+  $usuario_id = (int) $usuario_id;
+  $consulta = "SELECT titulo, vencimento
+               FROM tarefas
+               WHERE usuario_id = $usuario_id AND status = 'Pendente'
+               ORDER BY vencimento
+               LIMIT 5";
+  return mysqli_query($conexao, $consulta);
+}
+
+function alterarStatusTarefa($id, $status){
+  $conexao = conectarBD();
+  $id = (int) $id;
+  $consulta = "UPDATE tarefas SET status = '$status' WHERE id = $id";
+  mysqli_query($conexao, $consulta);
+}
+
 ?>

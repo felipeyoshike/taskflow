@@ -18,7 +18,7 @@
   <title>TaskFlow - Categorias</title>
   <link rel="icon" href="../img/logo.png" type="image/png">
   <link rel="stylesheet" href="../css/base.css">
-  <link rel="stylesheet" href="../css/categorias.css">
+  <link rel="stylesheet" href="../css/categorias.css?v=3">
 </head>
 <body>
   <aside class="sidebar" id="sidebar">
@@ -67,7 +67,7 @@
             <tr>
               <td><b><?php echo htmlspecialchars($c['nome']); ?></b></td>
               <td><?php echo htmlspecialchars($c['descricao'] ?? ''); ?></td>
-              <td>-</td>
+              <td><?php echo $c['total_tarefas'] > 0 ? (int) $c['total_tarefas'] : '-'; ?></td>
               <td class="col-acoes">
                 <a href="categorias.php?editar=<?php echo $c['id']; ?>" class="btn sec peq">Editar</a>
                 <form action="../processamento/processamentoCategorias.php" method="post" style="display:inline">

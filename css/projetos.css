@@ -1,5 +1,18 @@
 /* projetos.css - estilos exclusivos da página Projetos */
 
+/* Colunas da tabela centralizadas; só a primeira (nome) fica à esquerda */
+th,
+td
+{
+    text-align: center;
+}
+
+th:first-child,
+td:first-child
+{
+    text-align: left;
+}
+
 /* A coluna de progresso precisa de espaço para a barra e o percentual */
 .col-progresso
 {

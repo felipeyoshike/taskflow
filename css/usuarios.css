@@ -1,5 +1,18 @@
 /* usuarios.css - estilos exclusivos da página Usuários */
 
+/* Colunas da tabela centralizadas; só a primeira (nome) fica à esquerda */
+th,
+td
+{
+    text-align: center;
+}
+
+th:first-child,
+td:first-child
+{
+    text-align: left;
+}
+
 /* E-mail em cinza para destacar o nome */
 .col-email,
 td:nth-child(2)

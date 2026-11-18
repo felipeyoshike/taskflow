@@ -41,7 +41,13 @@ function excluirCategoria($id){
 function listarCategoriasDoUsuario($usuario_id){
   $conexao = conectarBD();
   $usuario_id = (int) $usuario_id;
-  $consulta = "SELECT * FROM categorias WHERE usuario_id = $usuario_id ORDER BY nome";
+  // total_tarefas: quantas tarefas existem em cada categoria (0 quando não tem nenhuma)
+  $consulta = "SELECT c.*, COUNT(t.id) AS total_tarefas
+               FROM categorias c
+               LEFT JOIN tarefas t ON t.categoria_id = c.id
+               WHERE c.usuario_id = $usuario_id
+               GROUP BY c.id
+               ORDER BY c.nome";
   return mysqli_query($conexao, $consulta);
 }
 
