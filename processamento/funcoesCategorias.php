@@ -9,7 +9,7 @@ function inserirCategoria($nome, $descricao, $usuario_id){
     mysqli_query($conexao, $consulta);
 }
 
-function AtualizarCategoria($nome, $descricao, $id){
+function atualizarCategoria($nome, $descricao, $id){
     $conexao = conectarBD();
     if ($descricao != "") {
         $consulta = "UPDATE categorias SET nome = '$nome', descricao = '$descricao' WHERE id = $id";

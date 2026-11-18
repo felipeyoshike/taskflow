@@ -8,7 +8,7 @@ if(!empty($_POST['inputId']) && !empty($_POST['inputNome'])){
     $nome = $_POST['inputNome'];
     $descricao = $_POST['inputDescricao'] ?? "";
 
-    AtualizarCategoria($nome, $descricao, $id);
+    atualizarCategoria($nome, $descricao, $id);
 
     header('Location:../view/categorias.php');
     die();
@@ -19,7 +19,7 @@ if(!empty($_POST['inputNome'])){
     $nome = $_POST['inputNome'];
     $descricao = $_POST['inputDescricao'] ?? "";
 
-    InserirCategoria($nome, $descricao, $usuario_id);
+    inserirCategoria($nome, $descricao, $usuario_id);
 
     header('Location:../view/categorias.php');
     die();
