@@ -38,5 +38,11 @@ function excluirCategoria($id){
     mysqli_query($conexao, $consulta);
 }
 
+function listarCategoriasDoUsuario($usuario_id){
+  $conexao = conectarBD();
+  $usuario_id = (int) $usuario_id;
+  $consulta = "SELECT * FROM categorias WHERE usuario_id = $usuario_id ORDER BY nome";
+  return mysqli_query($conexao, $consulta);
+}
 
 ?>

@@ -1,5 +1,21 @@
 <?php
- require "../processamento/verificarLogin.php"; 
+ require "../processamento/verificarLogin.php";
+ require "../processamento/funcoesCategorias.php";
+ require "../processamento/funcoesProjetos.php";
+ require "../processamento/funcoesTarefas.php";
+
+ date_default_timezone_set('America/Sao_Paulo');
+
+ $listaCategorias = mysqli_fetch_all(listarCategoriasDoUsuario($_SESSION['usuario_id']), MYSQLI_ASSOC);
+ $projetos = listarProjetos($_SESSION['usuario_id']);
+ $tarefas = listarTarefas($_SESSION['usuario_id']);
+
+ $tarefaEditar = null;
+ if (isset($_GET['editar'])) {
+   $tarefaEditar = buscarTarefa($_GET['editar']);
+ }
+ $prioridadeAtual = $tarefaEditar['prioridade'] ?? 'Média';
+ $statusAtual = $tarefaEditar['status'] ?? 'Pendente';
 ?>
 
 <!DOCTYPE html>
@@ -28,36 +44,125 @@
   <button class="btn sec menu-btn" id="btnMenu">☰ Menu</button>
 
   <h2>Minhas tarefas</h2>
-  <form id="formTarefa" class="card form" action="" method="post">
-    <h3 class="full" id="tituloForm">Nova tarefa</h3>
-    <input type="hidden" id="tId" name="id">
-    <div class="full"><label for="tTitulo">Título *</label><input id="tTitulo" name="titulo" required maxlength="100"></div>
-    <div class="full"><label for="tDescricao">Descrição</label><textarea id="tDescricao" name="descricao" rows="2"></textarea></div>
-    <!-- BACK-END: preencher as opções de categoria e projeto com os dados do banco -->
-    <div><label for="tCategoria">Categoria *</label><select id="tCategoria" name="categoria_id" required><option value="">Selecione...</option></select></div>
-    <div><label for="tProjeto">Projeto (opcional)</label><select id="tProjeto" name="projeto_id"><option value="">Sem projeto</option></select></div>
-    <div><label for="tVencimento">Vencimento *</label><input type="date" id="tVencimento" name="vencimento" required></div>
-    <div><label for="tPrioridade">Prioridade</label><select id="tPrioridade" name="prioridade"><option>Baixa</option><option selected>Média</option><option>Alta</option></select></div>
-    <div><label for="tStatus">Status</label><select id="tStatus" name="status"><option>Pendente</option><option>Concluída</option></select></div>
-      <div class="full"><button type="submit" class="btn">Salvar tarefa</button> <button type="reset" class="btn sec">Limpar</button></div>
+  <form id="formTarefa" class="card form" action="../processamento/processamentoTarefas.php" method="post">
+    <h3 class="full" id="tituloForm"><?php echo $tarefaEditar ? 'Editar tarefa' : 'Nova tarefa'; ?></h3>
+    <input type="hidden" id="tId" name="inputId" value="<?php echo $tarefaEditar['id'] ?? ''; ?>">
+
+    <div class="full">
+      <label for="tTitulo">Título *</label>
+      <input id="tTitulo" name="inputTitulo" required maxlength="100" value="<?php echo htmlspecialchars($tarefaEditar['titulo'] ?? ''); ?>">
+    </div>
+
+    <div class="full">
+      <label for="tDescricao">Descrição</label>
+      <textarea id="tDescricao" name="inputDescricao" rows="2"><?php echo htmlspecialchars($tarefaEditar['descricao'] ?? ''); ?></textarea>
+    </div>
+
+    <div>
+      <label for="tCategoria">Categoria *</label>
+      <select id="tCategoria" name="inputCategoria" required>
+        <option value="">Selecione...</option>
+        <?php foreach ($listaCategorias as $c) { ?>
+          <option value="<?php echo $c['id']; ?>" <?php echo (($tarefaEditar['categoria_id'] ?? '') == $c['id']) ? 'selected' : ''; ?>><?php echo htmlspecialchars($c['nome']); ?></option>
+        <?php } ?>
+      </select>
+    </div>
+
+    <div>
+      <label for="tProjeto">Projeto (opcional)</label>
+      <select id="tProjeto" name="inputProjeto">
+        <option value="">Sem projeto</option>
+        <?php while ($p = mysqli_fetch_assoc($projetos)) { ?>
+          <option value="<?php echo $p['id']; ?>" <?php echo (($tarefaEditar['projeto_id'] ?? '') == $p['id']) ? 'selected' : ''; ?>><?php echo htmlspecialchars($p['nome']); ?></option>
+        <?php } ?>
+      </select>
+    </div>
+
+    <div>
+      <label for="tVencimento">Vencimento *</label>
+      <input type="date" id="tVencimento" name="inputVencimento" required value="<?php echo $tarefaEditar['vencimento'] ?? ''; ?>">
+    </div>
+
+    <div>
+      <label for="tPrioridade">Prioridade</label>
+      <select id="tPrioridade" name="inputPrioridade">
+        <?php foreach (['Baixa', 'Média', 'Alta'] as $op) { ?>
+          <option <?php echo $prioridadeAtual == $op ? 'selected' : ''; ?>><?php echo $op; ?></option>
+        <?php } ?>
+      </select>
+    </div>
+
+    <div>
+      <label for="tStatus">Status</label>
+      <select id="tStatus" name="inputStatus">
+        <?php foreach (['Pendente', 'Concluída'] as $op) { ?>
+          <option <?php echo $statusAtual == $op ? 'selected' : ''; ?>><?php echo $op; ?></option>
+        <?php } ?>
+      </select>
+    </div>
+
+    <div class="full">
+      <button type="submit" class="btn">Salvar tarefa</button>
+      <?php if ($tarefaEditar) { ?>
+        <a href="minhas-tarefas.php" class="btn cancelar">Cancelar edição</a>
+      <?php } else { ?>
+        <button type="reset" class="btn sec">Limpar</button>
+      <?php } ?>
+    </div>
   </form>
 
   <div class="card">
     <div class="filtros">
       <input id="fBusca" placeholder="Buscar por título...">
       <select id="fStatus"><option value="">Todos os status</option><option>Pendente</option><option>Concluída</option><option>Atrasada</option></select>
-      <select id="fCategoria"><option value="">Todas as categorias</option></select>
+      <select id="fCategoria">
+        <option value="">Todas as categorias</option>
+        <?php foreach ($listaCategorias as $c) { ?>
+          <option value="<?php echo $c['id']; ?>"><?php echo htmlspecialchars($c['nome']); ?></option>
+        <?php } ?>
+      </select>
       <button type="button" class="btn sec" id="btnOrdem">Ordenar por prazo</button>
     </div>
     <div class="tabela">
       <table>
         <thead><tr><th>Tarefa</th><th>Categoria</th><th>Projeto</th><th>Prazo</th><th>Prioridade</th><th>Situação</th><th>Ações</th></tr></thead>
-        <!-- BACK-END: um <tr> por tarefa. Atributos usados pelos filtros do JavaScript:
-            data-status="Pendente | Concluída | Atrasada"  data-categoria="id da categoria"  data-vencimento="AAAA-MM-DD"
-            Exemplo:  <tr data-status="Pendente" data-categoria="1" data-vencimento="2026-11-20"> ... </tr>
-            Botão excluir:  <button class="btn perigo peq" data-confirmar="Excluir esta tarefa?">Excluir</button> -->
         <tbody id="corpoTarefas">
-          <tr class="sem-registros"><td colspan="7" class="vazio">Nenhuma tarefa cadastrada.</td></tr>
+          <?php while ($t = mysqli_fetch_assoc($tarefas)) {
+            // Situação calculada a partir da data de hoje (não fica guardada no banco)
+            $diasParaVencer = (strtotime($t['vencimento']) - strtotime(date('Y-m-d'))) / 86400;
+            if ($t['status'] == 'Concluída') {
+              $situacao = 'concluida'; $rotulo = 'Concluída'; $statusFiltro = 'Concluída';
+            } elseif ($diasParaVencer < 0) {
+              $situacao = 'atrasada'; $rotulo = 'Atrasada'; $statusFiltro = 'Atrasada';
+            } elseif ($diasParaVencer <= 3) {
+              $situacao = 'proxima'; $rotulo = 'Vence em breve'; $statusFiltro = 'Pendente';
+            } else {
+              $situacao = 'pendente'; $rotulo = 'Pendente'; $statusFiltro = 'Pendente';
+            }
+            $classePrioridade = strtolower(str_replace('é', 'e', $t['prioridade']));
+          ?>
+            <tr class="<?php echo $situacao == 'atrasada' ? 'atrasada' : ''; ?>"
+                data-status="<?php echo $statusFiltro; ?>"
+                data-categoria="<?php echo $t['categoria_id']; ?>"
+                data-vencimento="<?php echo $t['vencimento']; ?>">
+              <td><b><?php echo htmlspecialchars($t['titulo']); ?></b><br><span class="suave"><?php echo htmlspecialchars($t['descricao'] ?? ''); ?></span></td>
+              <td><?php echo htmlspecialchars($t['categoria_nome']); ?></td>
+              <td><?php echo $t['projeto_nome'] ? htmlspecialchars($t['projeto_nome']) : '-'; ?></td>
+              <td><?php echo date('d/m/Y', strtotime($t['vencimento'])); ?></td>
+              <td><span class="badge <?php echo $classePrioridade; ?>"><?php echo $t['prioridade']; ?></span></td>
+              <td><span class="badge <?php echo $situacao; ?>"><?php echo $rotulo; ?></span></td>
+              <td>
+                <a href="minhas-tarefas.php?editar=<?php echo $t['id']; ?>" class="btn sec peq">Editar</a>
+                <form action="../processamento/processamentoTarefas.php" method="post" style="display:inline">
+                  <input type="hidden" name="inputExcluirId" value="<?php echo $t['id']; ?>">
+                  <button class="btn perigo peq" data-confirmar="Excluir esta tarefa?">Excluir</button>
+                </form>
+              </td>
+            </tr>
+          <?php } ?>
+          <tr class="sem-registros" <?php if (mysqli_num_rows($tarefas) > 0) echo 'hidden'; ?>>
+            <td colspan="7" class="vazio">Nenhuma tarefa cadastrada.</td>
+          </tr>
         </tbody>
       </table>
     </div>

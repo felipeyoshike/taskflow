@@ -6,7 +6,7 @@
  if (isset($_GET['editar'])) {
    $categoriaEditar = buscarCategoria($_GET['editar']);
  }
- $categorias = listarCategorias();
+ $categorias = listarCategoriasDoUsuario($_SESSION['usuario_id']);
 
 ?>
 
