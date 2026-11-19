@@ -13,11 +13,10 @@
 
  $total = (int) $resumo['total'];
  $concluidas = (int) $resumo['concluidas'];
- $pendentes = (int) $resumo['pendentes'];          // inclui as atrasadas
+ $pendentes = (int) $resumo['pendentes'];          
  $atrasadas = (int) $resumo['atrasadas'];
- $noPrazo = $pendentes - $atrasadas;                     // pendentes que ainda não venceram
+ $noPrazo = $pendentes - $atrasadas;                     
 
- // Largura (em %) de uma barra do gráfico
  function percentual($valor, $total){
    return $total > 0 ? round($valor / $total * 100) : 0;
  }

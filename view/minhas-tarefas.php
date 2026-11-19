@@ -11,7 +11,6 @@
  $projetos = listarProjetos($_SESSION['usuario_id']);
  $tarefas = listarTarefas($_SESSION['usuario_id']);
 
- // Comentários de todas as tarefas do usuário (agrupados por tarefa logo abaixo)
  $comentarios = mysqli_fetch_all(listarComentarios($_SESSION['usuario_id']), MYSQLI_ASSOC);
  $comentariosPorTarefa = [];
  foreach ($comentarios as $c) {

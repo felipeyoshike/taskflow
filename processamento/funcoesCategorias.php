@@ -26,12 +26,6 @@ function buscarCategoria($id){
     return mysqli_fetch_assoc($resultado);
 }
 
-function listarCategorias(){
-    $conexao = conectarBD();
-    $consulta = "SELECT * FROM categorias ORDER BY nome";
-    return mysqli_query($conexao, $consulta);
-}
-
 function excluirCategoria($id){
     $conexao = conectarBD();
     $consulta = "DELETE FROM categorias WHERE id = $id";
@@ -41,7 +35,6 @@ function excluirCategoria($id){
 function listarCategoriasDoUsuario($usuario_id){
   $conexao = conectarBD();
   $usuario_id = (int) $usuario_id;
-  // total_tarefas: quantas tarefas existem em cada categoria (0 quando não tem nenhuma)
   $consulta = "SELECT c.*, COUNT(t.id) AS total_tarefas
                FROM categorias c
                LEFT JOIN tarefas t ON t.categoria_id = c.id

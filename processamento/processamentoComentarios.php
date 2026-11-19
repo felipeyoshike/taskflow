@@ -13,7 +13,6 @@ $tarefa_id = (int) ($_POST['inputComentarioTarefaId'] ?? 0);
 
 $voltar = '../view/minhas-tarefas.php' . ($tarefa_id > 0 ? '?comentarios=' . $tarefa_id : '');
 
-// EXCLUIR
 if (!empty($_POST['inputExcluirComentarioId'])){
   excluirComentario((int) $_POST['inputExcluirComentarioId'], $usuario_id);
 
