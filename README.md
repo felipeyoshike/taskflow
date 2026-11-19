@@ -5,6 +5,8 @@ Cada usuário organiza suas tarefas em categorias e projetos, acompanha prazos e
 
 Trabalho Prático 2 (Back-End) da disciplina **Linguagem de Programação IV** — Fatec Presidente Prudente, curso de Análise e Desenvolvimento de Sistemas. Desenvolvido individualmente.
 
+![Tela do sistema TaskFlow](tela.png)
+
 ## Funcionalidades
 
 **Acesso e segurança**
